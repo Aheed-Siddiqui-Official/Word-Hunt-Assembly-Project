@@ -133,3 +133,47 @@ check_word:
     add bl, al
     mov al, board[bx]
     
+    mov bl, cursor_y
+    mov cl, cols
+    mul cl
+    mov bl, cursor_x
+    add bl, al
+    mov ah, board[bx]
+    
+    cmp al, 'D'
+    jne reset_selection
+    cmp ah, 'O'
+    jne reset_selection 
+
+    mov found, 1
+    
+reset_selection:
+    mov selected_x, -1
+    mov selected_y, -1
+    jmp game_loop
+    
+exit_game_intermediate:
+    jmp exit_game
+
+exit_game:
+
+    mov ax, 0003h
+    int 10h
+    
+
+    mov ax, 4C00h
+    int 21h
+main endp
+
+draw_board proc
+    mov si, 0
+    mov dh, 1  ; Start drawing board one row below to make space for greeting
+    
+row_loop:
+    mov dl, 0
+    mov bh, 0
+    
+col_loop:
+    mov ah, 02h
+    int 10h
+    

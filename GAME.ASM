@@ -198,3 +198,29 @@ check_selected:
     cmp al, dl
     jne normal_cell
 
+    mov bl, selected_attr
+    jmp print_char
+    
+normal_cell:
+    mov bl, normal_attr
+    
+print_char:
+    mov ah, 09h
+    mov al, board[si]
+    mov bh, 0
+    mov cx, 1
+    int 10h
+    
+    inc si
+    inc dl
+    cmp dl, cols
+    jb col_loop
+    
+    inc dh
+    cmp dh, rows+1  ; Adjusted for the offset
+    jb row_loop
+    
+    ret
+draw_board endp
+
+end main

@@ -86,3 +86,50 @@ do_move_up:
     dec cursor_y
     jmp game_loop
     
+move_down:
+    cmp cursor_y, rows-1
+    jne do_move_down
+    jmp input_loop
+do_move_down:
+    inc cursor_y
+    jmp game_loop
+    
+move_left:
+    cmp cursor_x, 0
+    jne do_move_left
+    jmp input_loop
+do_move_left:
+    dec cursor_x
+    jmp game_loop
+    
+move_right:
+    cmp cursor_x, cols-1
+    jne do_move_right
+    jmp input_loop
+do_move_right:
+    inc cursor_x
+    jmp game_loop
+    
+select_cell:
+
+    cmp selected_x, -1
+    je first_selection
+    jmp check_word
+    
+first_selection:
+
+    mov al, cursor_x
+    mov selected_x, al
+    mov al, cursor_y
+    mov selected_y, al
+    jmp game_loop
+    
+check_word:
+
+    mov al, selected_y
+    mov bl, cols
+    mul bl
+    mov bl, selected_x
+    add bl, al
+    mov al, board[bx]
+    

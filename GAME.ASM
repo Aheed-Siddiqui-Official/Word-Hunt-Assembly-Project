@@ -177,3 +177,24 @@ col_loop:
     mov ah, 02h
     int 10h
     
+    mov al, cursor_y
+    cmp al, dh
+    jne check_selected
+    mov al, cursor_x
+    cmp al, dl
+    jne check_selected
+    
+
+    mov bl, cursor_attr
+    jmp print_char
+    
+check_selected:
+    cmp selected_x, -1
+    je normal_cell
+    mov al, selected_y
+    cmp al, dh
+    jne normal_cell
+    mov al, selected_x
+    cmp al, dl
+    jne normal_cell
+
